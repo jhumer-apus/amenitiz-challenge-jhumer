@@ -1,21 +1,26 @@
 import { useEffect, useState, useTransition } from "react";
 import { useParams } from "react-router";
 import axiosInstance from "../../lib/axiosInstance";
+
 import type { TypeProfileProps } from "../../types";
+
 import Box from "../../components/ui/Box";
-import { FaRegClock, FaRegUser } from "react-icons/fa";
+import Avatar from "../../components/profile/Avatar";
+
 import { useTimestamp } from "../../hooks/use-timestamp";
+
 import { ClipLoader } from "react-spinners";
+import { FaRegClock } from "react-icons/fa";
 
 export default function Profile() {
 
-    const { username } = useParams();
-    const [ isPending, startTransition ] = useTransition()
-    const [ formatLastOnline, setFormatLastOnline ] = useState<string>("")
-
     // HOOKS
     const { formatTimestamp } = useTimestamp()
+    const { username } = useParams();
+    const [ isPending, startTransition ] = useTransition()
 
+    // STATES
+    const [ formatLastOnline, setFormatLastOnline ] = useState<string>("")
     const [ profileData, setProfileData ] = useState<TypeProfileProps>({
         "@id": "",
         avatar: "",
@@ -79,16 +84,12 @@ export default function Profile() {
     return (
         <div>
             <div className="w-fit m-auto p-8">
-                <div id="avatar" className="m-auto w-fit rounded-full size-32 overflow-hidden my-2">
-                    {profileData.avatar 
-                        ? (<img src={profileData.avatar} className="size-full"/>)
-                        : (<FaRegUser className="size-full" />)
-                    }
-       
 
-                </div>
+                {/* PROFILE HEADER */}
+                <Avatar imagePath={profileData.avatar } />
                 <h1 className="text-lg text-center">{profileData.name}</h1>
 
+                {/* SUMMARY LAST ONLINE/ACTIVE */}
                 <div className="text-2xl m-auto w-fit mt-10 text-center">
                     <div className="flex items-center gap-2">
                         <FaRegClock/>
